@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <title>TusMo</title>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <div id="gameContainer" @keyup="keyEvent($event)">
+        <h1>TusMo</h1>
+        <select
+          name="wordLength"
+          id="wordLength"
+          @change="selectWordLength($event)"
+        >
+          <option value="6">6 lettres</option>
+          <option value="7">7 lettres</option>
+          <option value="8">8 lettres</option>
+          <option value="9">9 lettres</option>
+        </select>
+        <div id="grid">
+          <table>
+            <tbody>
+              <tr v-for="(row, rowIndex) in displayedTries" :key="rowIndex">
+                <td
+                  class="played"
+                  v-for="(cell, cellIndex) in row"
+                  :key="'cell' + rowIndex + '_' + cellIndex"
+                  :class="{ letterWrongPosition: cell.state === 'WRONGPOS', correctLetter: cell.state === 'CORRECT'}"
+                >
+                  {{cell.letter}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="keyboard">
+          <div class="keyboardLine" v-for="(line, lineIndex) in keyboardState">
+            <div
+              class="keyboardKey played"
+              v-for="(key, keyIndex) in line"
+              @click="handleKey(key.id)"
+              :key="'key' + lineIndex + '_' + keyIndex"
+              :class="{ letterWrongPosition: key.state === 'WRONGPOS', correctLetter: key.state === 'CORRECT', notInWord: key.state === 'NOTINWORD'  }"
+            >
+              {{ key.letter }}
+            </div>
+          </div>
+        </div>
+        <div id="gameOver" class="hide" :class="{ show: isGameOver }">
+          <div>
+            <h2>{{ gameResult }}</h2>
+          </div>
+          <p>
+            Nombre d'essais {{currentTry == maxTries ? maxTries : currentTry +
+            1}} / {{ maxTries}}
+          </p>
+          <div id="choices">
+            <a @click="showHistory = !showHistory">Voir l'historique</a>
+            <a @click="playAgain(false)">Ré-essayer</a>
+            <a @click="playAgain(true)">Autre mot</a>
+            <a @click="showHiddenWord = true">Voir le mot</a>
+          </div>
+          <p class="hide" :class="{show: showHiddenWord}">
+            Le mot était {{hiddenWord.join().replaceAll(',','')}}
+          </p>
+        </div>
+      </div>
+
+      <div id="gameHistory" :class="{ showHistory: showHistory }">
+        <div id="historyContainer">
+          <h2>Historique</h2>
+          <div id="history">
+            <p v-for="historyTry in historyTries" :key="historyTry">
+              <span v-for="(emoji,index) in historyTry" :key="index"
+                >{{emoji}}</span
+              >
+            </p>
+          </div>
+          <a @click="showHistory = !showHistory">Fermer</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script type="module" src="./js/words.js"></script>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

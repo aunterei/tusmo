@@ -1,0 +1,271 @@
+/* ===========================================================================
+                                GLOBAL SETTINGS 
+   =========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;900&display=swap");
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #121213;
+  --foreground: white;
+  --gridBackground: #0077c7;
+  --yellow: #ffbd00;
+  --red: #e7002a;
+  --gray: rgb(112, 112, 112);
+  --cellSize: 60px;
+  --cellPadding: 2px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+
+  font-size: 62.5%;
+}
+
+#mainContainer {
+  display: flex;
+
+  width: 100%;
+  height: 100vh;
+
+  justify-content: center;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 6rem;
+  margin: 1rem;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 4rem;
+  margin: 0rem;
+}
+
+p {
+  font-size: 2.5rem;
+  margin: 0.5rem;
+}
+
+a {
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
+a:after {
+  content: "";
+  display: block;
+  width: 100% !important;
+  border-bottom: 1px solid var(--foreground);
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+
+a:hover:after {
+  width: 0% !important;
+}
+
+.hide {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+.show {
+  opacity: 1 !important;
+}
+
+/* ===========================================================================
+                                GAME 
+   =========================================================================== */
+
+/* Main Container */
+
+#gameContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 95vh;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Word Length Selection */
+
+select {
+  cursor: pointer;
+  color: var(--foreground);
+  background-color: var(--background);
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  margin: 3rem;
+}
+
+/* Game Grid */
+
+#grid {
+  background-color: var(--gridBackground);
+}
+
+#grid table {
+  border-spacing: 0;
+}
+
+#grid td {
+  position: relative;
+
+  font-weight: 900;
+  height: calc(var(--cellSize) - 2 * var(--cellPadding));
+  min-width: calc(var(--cellSize) - 2 * var(--cellPadding));
+  padding: var(--cellPadding);
+
+  border: 1px solid white;
+
+  z-index: 0;
+  font-size: 3rem;
+  text-align: center;
+}
+
+/* Keyboard Styling */
+
+#keyboard {
+  width: 47.5rem;
+  margin: 3rem;
+}
+
+.keyboardLine {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.keyboardLine:last-of-type {
+  justify-content: flex-end;
+}
+
+.keyboardLine:last-of-type .keyboardKey:last-of-type {
+  padding: 1rem 3rem;
+}
+
+.keyboardKey {
+  position: relative;
+  cursor: pointer;
+
+  font-size: 1.5rem;
+  border: 1px solid white;
+  border-radius: 5px;
+
+  user-select: none;
+
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 4rem;
+}
+
+/* Keyboard masks */
+
+.played::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.wrongPosition::after {
+  background-color: var(--yellow);
+  border-radius: 50%;
+}
+
+.letterWrongPosition::after {
+  background-color: var(--yellow);
+}
+
+.correctLetter::after {
+  background-color: var(--red);
+}
+
+:not(.correctLetter):not(.letterWrongPosition).notInWord {
+  color: var(--gray);
+  border-color: var(--gray);
+}
+
+/* End game Choices */
+
+#gameOver {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#choices {
+  display: flex;
+}
+
+/* ===========================================================================
+                                GAME HISTORY
+   =========================================================================== */
+
+#gameHistory {
+  position: fixed;
+  pointer-events: none;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+#historyContainer {
+  position: relative;
+  padding: 8rem 0;
+
+  background-color: black;
+  height: 50vh;
+  width: 60rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#history {
+  margin: 4rem 0;
+}
+
+.showHistory {
+  opacity: 1 !important;
+  pointer-events: initial !important;
+}
